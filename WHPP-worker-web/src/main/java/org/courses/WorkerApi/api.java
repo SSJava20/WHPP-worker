@@ -55,7 +55,7 @@ public class api
         }
     }
 
-    @PUT
+    @POST
     @Path("/put_point")
     @Consumes(MediaType.APPLICATION_XML)
     public Response putPoint(@HeaderParam("user_login") String id, @HeaderParam("user_pass") String passHash,
