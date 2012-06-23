@@ -28,7 +28,7 @@ public class api
     @Produces(MediaType.TEXT_HTML)
     public String sayHtmlHello()
     {
-        return "<html> " + "<title>" + "Hello " + "</title>"
+        return "<html> " + "<title>" + "Hello anonymous" + "</title>"
                 + "<body><h1>" + "Hello " + "</body></h1>" + "</html> ";
     }
 
@@ -37,7 +37,16 @@ public class api
     @Produces(MediaType.TEXT_XML)
     public Response getRoute(@HeaderParam("user_login") String id, @HeaderParam("user_pass") String passHash)
     {
-        if (stubs.auth(Long.parseLong(id), passHash))
+        Long uid = null;
+        try
+        {
+            uid= Long.parseLong(id);
+        } catch (NumberFormatException ex)
+        {
+            return Response.status(400).build();
+        }
+        
+        if (stubs.auth(uid, passHash))
         {
             return Response.status(200).entity(stubs.getMapForRoute(id)).build();
         } else
@@ -52,7 +61,14 @@ public class api
     public Response putPoint(@HeaderParam("user_login") String id, @HeaderParam("user_pass") String passHash,
             JAXBElement<stubs.PointToSend> point)
     {
-        Long uid = Long.parseLong(id);
+        Long uid = null;
+        try
+        {
+            uid= Long.parseLong(id);
+        } catch (NumberFormatException ex)
+        {
+            return Response.status(400).build();
+        }
         
         if (stubs.auth(uid, passHash))
         {
