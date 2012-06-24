@@ -27,7 +27,7 @@ import javax.ejb.Singleton;
  * @author GAL
  */
 @Singleton
-public class MessageReceiver implements MessageReceiverLocal {
+public class MessageReceiver {
 
 	final static String TOPIC_PATH = "web_receive";
 
@@ -60,7 +60,7 @@ public class MessageReceiver implements MessageReceiverLocal {
 	 * @throws ServiceException
 	 * @throws IOException
 	 */
-	@Override
+//	@Override
 	public BrokeredMessage getMessage() throws ServiceException, IOException {
 
 		if (isContainMessage()) {

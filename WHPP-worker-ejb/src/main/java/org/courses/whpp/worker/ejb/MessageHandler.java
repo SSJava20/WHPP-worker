@@ -14,10 +14,9 @@ import javax.ejb.Stateless;
  * @author NGAL
  */
 @Stateless
-@Local
-public class MessageHandler implements MessageHandlerLocal {
+public class MessageHandler{
 
-	@Override
+//	@Override
 	public void handleMessage(BrokeredMessage message) {
 
 		System.out.println("I receive new message: " + message.getLabel());

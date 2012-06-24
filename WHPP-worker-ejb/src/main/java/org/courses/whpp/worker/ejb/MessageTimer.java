@@ -25,10 +25,10 @@ import javax.ejb.Startup;
 public class MessageTimer implements MessageTimerLocal {
 
 	@EJB
-	public MessageReceiverLocal messageReceiver;
+	public MessageReceiver messageReceiver;
 
 	@EJB
-	public MessageHandlerLocal messageHandler;
+	public MessageHandler messageHandler;
 
 	@PostConstruct
 	public void createTimer() {
@@ -41,9 +41,9 @@ public class MessageTimer implements MessageTimerLocal {
 
 	class TimerTaskExt extends TimerTask {
 
-		private MessageHandlerLocal m_handler;
+		private MessageHandler m_handler;
 
-		public TimerTaskExt(MessageHandlerLocal handler) {
+		public TimerTaskExt(MessageHandler handler) {
 			this.m_handler = handler;
 		}
 
