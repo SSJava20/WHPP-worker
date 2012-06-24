@@ -6,6 +6,7 @@ package org.courses.WorkerApi;
 
 import java.math.BigDecimal;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.courses.mobileentity.entity.RoutepointXML;
 
 /**
  *
@@ -23,7 +24,12 @@ public class stubs
         return "wheeeee";//FIXME: replace with real realization
     }
     
-    public static Boolean markPoint(PointToSend Point, Long UserId)
+    public static Boolean markPoint(RoutepointXML Point, Long UserId)
+    {
+        return true;//FIXME: replace with real realization
+    }
+    
+    public static Boolean warning(String msg)
     {
         return true;//FIXME: replace with real realization
     }
