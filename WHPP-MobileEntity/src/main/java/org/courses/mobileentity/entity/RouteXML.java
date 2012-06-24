@@ -26,12 +26,6 @@ public class RouteXML implements Serializable {
 
 	private String name;
 
-	private boolean isPassed;
-
-	private Date passedTime;
-
-	private String driverId;
-
 	private List<RoutepointXML> routepointList;
 
 	public RouteXML() {
@@ -58,30 +52,6 @@ public class RouteXML implements Serializable {
 
 	public String getName() {
 		return name;
-	}
-
-	public boolean isIsPassed() {
-		return isPassed;
-	}
-
-	public void setIsPassed(boolean isPassed) {
-		this.isPassed = isPassed;
-	}
-
-	public Date getPassedTime() {
-		return passedTime;
-	}
-
-	public void setPassedTime(Date passedTime) {
-		this.passedTime = passedTime;
-	}
-
-	public String getDriver() {
-		return driverId;
-	}
-
-	public void setDriver(String driver) {
-		this.driverId = driver;
 	}
 
 	@XmlElement

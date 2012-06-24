@@ -5,6 +5,7 @@
 package org.courses.mobileentity.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
@@ -27,6 +28,12 @@ public class RoutepointXML implements Serializable {
 	private RouteXML routeId;
 
 	private CoordsXML coordsId;
+
+	private boolean isPassed;
+
+	private Date passedTime;
+
+	private String driverId;
 
 	public RoutepointXML() {
 	}
@@ -75,6 +82,30 @@ public class RoutepointXML implements Serializable {
 
 	public void setCoordsId(CoordsXML coordsId) {
 		this.coordsId = coordsId;
+	}
+
+	public boolean isIsPassed() {
+		return isPassed;
+	}
+
+	public void setIsPassed(boolean isPassed) {
+		this.isPassed = isPassed;
+	}
+
+	public Date getPassedTime() {
+		return passedTime;
+	}
+
+	public void setPassedTime(Date passedTime) {
+		this.passedTime = passedTime;
+	}
+
+	public String getDriver() {
+		return driverId;
+	}
+
+	public void setDriver(String driver) {
+		this.driverId = driver;
 	}
 
 	@Override
