@@ -13,6 +13,7 @@ import javax.ejb.LocalBean;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import org.courses.mobileentity.entity.RouteXML;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
@@ -43,5 +44,12 @@ public class XmlCoder {
 		}
 
 		return builder.toString();
+	}
+
+	public Object convertFromXML(String string, Class<?> clazz) throws Exception {
+
+		Serializer serializer = new Persister();
+
+		return serializer.read(clazz, string);
 	}
 }

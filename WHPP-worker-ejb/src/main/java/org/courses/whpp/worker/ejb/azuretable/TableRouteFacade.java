@@ -51,4 +51,8 @@ public class TableRouteFacade {
 	public void create(RouteXML routeXML, String driverId) throws StorageException, IOException {
 		tableStorage.save(prepareRouteToStore(routeXML, driverId));
 	}
+
+	public void createOrReplace(RouteXML routeXML, String driverId) throws StorageException, IOException {
+		tableStorage.saveOrReplace(prepareRouteToStore(routeXML, driverId));
+	}
 }

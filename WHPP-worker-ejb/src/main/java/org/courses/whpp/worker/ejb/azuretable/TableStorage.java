@@ -49,6 +49,12 @@ public class TableStorage {
 		tableClient.execute(tableName, insert);
 	}
 
+	public void saveOrReplace(TableStoragedClass storagedClass) throws StorageException {
+
+		TableOperation insert = TableOperation.insertOrReplace(storagedClass);
+		tableClient.execute(tableName, insert);
+	}
+
 	public TableStoragedClass get(String partitionKey, String rowKey) throws StorageException, IOException, ClassNotFoundException {
 
 		TableOperation retrieve = TableOperation.retrieve(partitionKey, rowKey, TableStoragedClass.class);
