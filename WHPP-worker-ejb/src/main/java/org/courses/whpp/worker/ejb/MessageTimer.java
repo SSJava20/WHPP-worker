@@ -37,7 +37,7 @@ public class MessageTimer {
 
 		TimerTask task = new TimerTaskExt(messageHandler);
 
-		t.schedule(task, 0, 1000);
+		t.schedule(task, 0, 5000);
 	}
 
 	class TimerTaskExt extends TimerTask {

@@ -9,8 +9,11 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.ws.rs.*;
@@ -37,7 +40,7 @@ import org.courses.whpp.worker.ejb.xml.XmlCoder;
  * @author stvad
  */
 @Path("/mobile")
-@Singleton
+@Stateless
 public class api {
 
 	@EJB
@@ -65,17 +68,21 @@ public class api {
 	@GET
 	@Path("/get_route")
 	@Produces(MediaType.TEXT_XML)
-	public Response getRoute(@HeaderParam("user_login") String id, @HeaderParam("user_pass") String passHash) throws JAXBException, IOException, ClassNotFoundException, StorageException {
+	public Response getRoute(@HeaderParam("user_login") String id, @HeaderParam("user_pass") String passHash) {
+		try {
+			if (authenticator.isDriverExists(id, passHash)) {
 
-		if (authenticator.isDriverExists(id, passHash)) {
+				String answer = coder.convertToXML(routeFacade.getRouteForDriver(id));
 
-			String answer = coder.convertToXML(routeFacade.getRouteForDriver(id));
+				return Response.status(200).entity(answer).build();
 
-			return Response.status(200).entity(answer).build();
-
-		} else {
-			return Response.status(401).build();
+			} else {
+				return Response.status(401).build();
+			}
+		} catch (Exception ex) {
+			Logger.getLogger(api.class.getName()).log(Level.SEVERE, null, ex);
 		}
+		return Response.status(400).build();
 	}
 
 	@POST
@@ -91,7 +98,30 @@ public class api {
 		}
 
 		if (stubs.auth(uid, passHash)) {
-			if (stubs.markPoint(point.getValue(), uid)) {
+			if (stubs.markPoint(null, uid)) {
+				return Response.status(201).build();
+			} else {
+				return Response.status(403).build();
+			}
+		} else {
+			return Response.status(401).build();
+		}
+	}
+
+	@POST
+	@Path("/put_warning_msg")
+	@Consumes(MediaType.TEXT_PLAIN)
+	public Response putWarningMessage(@HeaderParam("user_login") String id, @HeaderParam("user_pass") String passHash,
+			String msgText) {
+		Long uid = null;
+		try {
+			uid = Long.parseLong(id);
+		} catch (NumberFormatException ex) {
+			return Response.status(400).build();
+		}
+
+		if (stubs.auth(uid, passHash)) {
+			if (stubs.warning(msgText)) {
 				return Response.status(201).build();
 			} else {
 				return Response.status(403).build();

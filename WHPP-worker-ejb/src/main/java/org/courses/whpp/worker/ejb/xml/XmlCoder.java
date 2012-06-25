@@ -6,14 +6,15 @@ package org.courses.whpp.worker.ejb.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.Scanner;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import org.courses.mobileentity.entity.RouteXML;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 /**
  *
@@ -23,19 +24,18 @@ import org.courses.mobileentity.entity.RouteXML;
 @LocalBean
 public class XmlCoder {
 
-	public String convertToXML(Object object) throws JAXBException {
+	public String convertToXML(Object object) throws Exception {
 
 		StringBuilder builder = new StringBuilder();
 
-		JAXBContext context = JAXBContext.newInstance(object.getClass());
-		Marshaller m = context.createMarshaller();
-		m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		Serializer serializer = new Persister();
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-		m.marshal(object, baos);
+		serializer.write(object, baos);
 
 		ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+
 		Scanner scanner = new Scanner(bais);
 
 		while (scanner.hasNext()) {

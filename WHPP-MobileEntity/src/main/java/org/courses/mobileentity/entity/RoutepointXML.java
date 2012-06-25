@@ -6,130 +6,164 @@ package org.courses.mobileentity.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlRootElement;
+//import javax.xml.bind.annotation.XmlAttribute;
+//import javax.xml.bind.annotation.XmlElement;
+//import javax.xml.bind.annotation.XmlID;
+//import javax.xml.bind.annotation.XmlIDREF;
+//import javax.xml.bind.annotation.XmlRootElement;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.Root;
 
 /**
  *
  * @author NGAL
  */
-@XmlRootElement
-public class RoutepointXML implements Serializable {
+//@XmlRootElement
+//@Root
+public class RoutepointXML implements Serializable
+{
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
+    
+    @Attribute(name="id")
+    private String id;
+    
+    @Element
+    private String name;
+    
+    //?
+    private RouteXML routeId;
+    
+    @Element
+    private CoordsXML coordsId;
+    
+    @Element
+    private boolean isPassed;
+    
+    @Element(required=false)
+    private Date passedTime;
+    
+    @Element(required=false)
+    private String driverId;
 
-	private String id;
+    public RoutepointXML()
+    {
+    }
 
-	private String name;
+    public RoutepointXML(String id)
+    {
+        this.id = id;
+    }
 
-	private RouteXML routeId;
+    public RoutepointXML(String id, String name)
+    {
+        this.id = id;
+        this.name = name;
+    }
 
-	private CoordsXML coordsId;
+//    @XmlID
+//    @XmlAttribute
+    public String getId()
+    {
+        return id;
+    }
 
-	private boolean isPassed;
+    public void setId(String id)
+    {
+        this.id = id;
+    }
 
-	private Date passedTime;
+//    @XmlElement
+    public String getName()
+    {
+        return name;
+    }
 
-	private String driverId;
+    public void setName(String name)
+    {
+        this.name = name;
+    }
 
-	public RoutepointXML() {
-	}
+//    @XmlIDREF
+    public RouteXML getRouteId()
+    {
+        return routeId;
+    }
 
-	public RoutepointXML(String id) {
-		this.id = id;
-	}
+    public void setRouteId(RouteXML routeId)
+    {
+        this.routeId = routeId;
+    }
 
-	public RoutepointXML(String id, String name) {
-		this.id = id;
-		this.name = name;
-	}
+//    @XmlElement
+    public CoordsXML getCoordsId()
+    {
+        return coordsId;
+    }
 
-	@XmlID
-	@XmlAttribute
-	public String getId() {
-		return id;
-	}
+    public void setCoordsId(CoordsXML coordsId)
+    {
+        this.coordsId = coordsId;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public boolean isIsPassed()
+    {
+        return isPassed;
+    }
 
-	@XmlElement
-	public String getName() {
-		return name;
-	}
+    public void setIsPassed(boolean isPassed)
+    {
+        this.isPassed = isPassed;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Date getPassedTime()
+    {
+        return passedTime;
+    }
 
-	@XmlIDREF
-	public RouteXML getRouteId() {
-		return routeId;
-	}
+    public void setPassedTime(Date passedTime)
+    {
+        this.passedTime = passedTime;
+    }
 
-	public void setRouteId(RouteXML routeId) {
-		this.routeId = routeId;
-	}
+    public String getDriver()
+    {
+        return driverId;
+    }
 
-	@XmlElement
-	public CoordsXML getCoordsId() {
-		return coordsId;
-	}
+    public void setDriver(String driver)
+    {
+        this.driverId = driver;
+    }
 
-	public void setCoordsId(CoordsXML coordsId) {
-		this.coordsId = coordsId;
-	}
+    @Override
+    public int hashCode()
+    {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
 
-	public boolean isIsPassed() {
-		return isPassed;
-	}
+    @Override
+    public boolean equals(Object object)
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof RoutepointXML))
+        {
+            return false;
+        }
+        RoutepointXML other = (RoutepointXML) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)))
+        {
+            return false;
+        }
+        return true;
+    }
 
-	public void setIsPassed(boolean isPassed) {
-		this.isPassed = isPassed;
-	}
-
-	public Date getPassedTime() {
-		return passedTime;
-	}
-
-	public void setPassedTime(Date passedTime) {
-		this.passedTime = passedTime;
-	}
-
-	public String getDriver() {
-		return driverId;
-	}
-
-	public void setDriver(String driver) {
-		this.driverId = driver;
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 0;
-		hash += (id != null ? id.hashCode() : 0);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object object) {
-		// TODO: Warning - this method won't work in the case the id fields are not set
-		if (!(object instanceof RoutepointXML)) {
-			return false;
-		}
-		RoutepointXML other = (RoutepointXML) object;
-		if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-			return false;
-		}
-		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "org.courses.whpp.worker.entity.Routepoint[ id=" + id + " ]";
-	}
+    @Override
+    public String toString()
+    {
+        return "org.courses.whpp.worker.entity.Routepoint[ id=" + id + " ]";
+    }
 }

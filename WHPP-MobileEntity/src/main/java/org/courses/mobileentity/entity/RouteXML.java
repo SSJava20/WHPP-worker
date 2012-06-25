@@ -7,25 +7,33 @@ package org.courses.mobileentity.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlRootElement;
+//import javax.xml.bind.annotation.XmlAttribute;
+//import javax.xml.bind.annotation.XmlElement;
+//import javax.xml.bind.annotation.XmlElementWrapper;
+//import javax.xml.bind.annotation.XmlID;
+//import javax.xml.bind.annotation.XmlRootElement;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Root;
 
 /**
  *
  * @author NGAL
  */
-@XmlRootElement
+//@XmlRootElement
+@Root
 public class RouteXML implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String id;
+	@Attribute(name="id")
+        private String id;
 
-	private String name;
+	@Element
+        private String name;
 
+        @ElementList
 	private List<RoutepointXML> routepointList;
 
 	public RouteXML() {
@@ -40,8 +48,8 @@ public class RouteXML implements Serializable {
 		this.name = name;
 	}
 
-	@XmlID
-	@XmlAttribute
+//	@XmlID
+//	@XmlAttribute
 	public String getId() {
 		return id;
 	}
@@ -54,13 +62,13 @@ public class RouteXML implements Serializable {
 		return name;
 	}
 
-	@XmlElement
+//	@XmlElement
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	@XmlElementWrapper(name = "points")
-	@XmlElement
+//	@XmlElementWrapper(name = "points")
+//	@XmlElement
 	public List<RoutepointXML> getRoutepointList() {
 		return routepointList;
 	}
