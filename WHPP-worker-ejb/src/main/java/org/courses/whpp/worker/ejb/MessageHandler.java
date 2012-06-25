@@ -4,22 +4,49 @@
  */
 package org.courses.whpp.worker.ejb;
 
+import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
+import java.io.IOException;
+import javax.ejb.EJB;
 import javax.ejb.Local;
-import javax.ejb.Singleton;
 import javax.ejb.Stateless;
+import org.courses.mobileentity.entity.RouteXML;
+import org.courses.whpp.entity.Route;
+import org.courses.whpp.message.Message;
+import org.courses.whpp.session.RouteFacade;
+import org.courses.whpp.worker.ejb.azuretable.TableRouteFacade;
+import org.courses.whpp.worker.ejb.util.EntityXMLConverter;
+import org.courses.whpp.worker.ejb.util.MessageConverter;
 
 /**
  *
  * @author NGAL
  */
 @Stateless
-public class MessageHandler{
+@Local
+public class MessageHandler implements MessageHandlerLocal {
 
-//	@Override
-	public void handleMessage(BrokeredMessage message) {
+	@EJB
+	MessageConverter messageConverter;
 
-		System.out.println("I receive new message: " + message.getLabel());
-		
+	@EJB
+	EntityXMLConverter entityXMLConverter;
+
+	@EJB
+	TableRouteFacade tableRouteFacade;
+
+	@EJB
+	RouteFacade routeFacade;
+
+	@Override
+	public void handleMessage(BrokeredMessage brokeredMessage) throws StorageException, IOException, ClassNotFoundException {
+		System.out.println("I receive new message: " + brokeredMessage.getLabel());
+		Message message = messageConverter.convert(brokeredMessage.getBody());
+
+		Route r = routeFacade.find(message.getRouteId());
+
+		RouteXML routeXML = entityXMLConverter.toXMLRoute(r);
+
+		tableRouteFacade.create(routeXML, message.getDriverId());
 	}
 }

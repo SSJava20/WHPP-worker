@@ -9,13 +9,14 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import org.courses.whpp.message.Message;
 
 /**
  *
  * @author NGAL
  */
-@Singleton
+@Stateless
 public class MessageConverter {
 
 	/**

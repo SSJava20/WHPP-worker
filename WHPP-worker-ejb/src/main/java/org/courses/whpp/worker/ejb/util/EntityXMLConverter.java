@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.courses.whpp.worker.ejb.converter;
+package org.courses.whpp.worker.ejb.util;
 
 import java.util.ArrayList;
 import javax.ejb.Stateless;
@@ -29,11 +29,14 @@ public class EntityXMLConverter {
 
 		ArrayList<RoutepointXML> routepointXMLs = new ArrayList<RoutepointXML>();
 
-		for (Routepoint p : route.getRoutepointList()) {
+		if (route.getRoutepointList() != null) {
+			for (int i = 0; i < route.getRoutepointList().size(); i++) {
 
-			RoutepointXML pXML = toXMLRoutepoint(p);
-			pXML.setRouteId(routeXML);
-			routepointXMLs.add(pXML);
+				Routepoint p = route.getRoutepointList().get(i);
+				RoutepointXML pXML = toXMLRoutepoint(p);
+				pXML.setRouteId(routeXML);
+				routepointXMLs.add(pXML);
+			}
 		}
 
 		routeXML.setRoutepointList(routepointXMLs);

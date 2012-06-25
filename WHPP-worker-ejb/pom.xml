@@ -26,14 +26,14 @@
 			<artifactId>WHPP-ejb</artifactId>
 			<version>${project.version}</version>
 			<type>ejb</type>
-			<scope>provided</scope>
+			<scope>compile</scope>
 		</dependency>
-	 <dependency>
-	  <groupId>${project.groupId}</groupId>
-	  <artifactId>WHPP-MobileEntity</artifactId>
-	  <version>${project.version}</version>
-	 </dependency>
-	 <dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>WHPP-MobileEntity</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<version>6.0</version>
@@ -45,6 +45,11 @@
 			<version>0.2.2</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.4</version>
+		</dependency> 
 	</dependencies>
 
 	<build>

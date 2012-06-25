@@ -5,6 +5,7 @@
 package org.courses.whpp.worker.ejb;
 
 import com.microsoft.windowsazure.services.core.ServiceException;
+import com.microsoft.windowsazure.services.core.storage.StorageException;
 import com.microsoft.windowsazure.services.serviceBus.models.BrokeredMessage;
 import java.io.IOException;
 import java.util.Timer;
@@ -22,13 +23,13 @@ import javax.ejb.Startup;
  */
 @Singleton
 @Startup
-public class MessageTimer implements MessageTimerLocal {
+public class MessageTimer {
+
+	@EJB
+	private MessageHandlerLocal messageHandler;
 
 	@EJB
 	public MessageReceiver messageReceiver;
-
-	@EJB
-	public MessageHandler messageHandler;
 
 	@PostConstruct
 	public void createTimer() {
@@ -41,9 +42,9 @@ public class MessageTimer implements MessageTimerLocal {
 
 	class TimerTaskExt extends TimerTask {
 
-		private MessageHandler m_handler;
+		private MessageHandlerLocal m_handler;
 
-		public TimerTaskExt(MessageHandler handler) {
+		public TimerTaskExt(MessageHandlerLocal handler) {
 			this.m_handler = handler;
 		}
 
@@ -54,10 +55,14 @@ public class MessageTimer implements MessageTimerLocal {
 				if (message != null) {
 					m_handler.handleMessage(message);
 				}
+			} catch (StorageException ex) {
+				Logger.getLogger(MessageTimer.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (ClassNotFoundException ex) {
+				Logger.getLogger(MessageTimer.class.getName()).log(Level.SEVERE, null, ex);
 			} catch (ServiceException ex) {
-				ex.printStackTrace();
+				Logger.getLogger(MessageTimer.class.getName()).log(Level.SEVERE, null, ex);
 			} catch (IOException ex) {
-				ex.printStackTrace();
+				Logger.getLogger(MessageTimer.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
 	}

@@ -4,9 +4,15 @@
  */
 package org.courses.WorkerApi;
 
+import com.microsoft.windowsazure.services.core.storage.StorageException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import javax.ejb.EJB;
+import javax.ejb.Singleton;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -18,13 +24,30 @@ import javax.xml.bind.Unmarshaller;
 import org.courses.mobileentity.entity.CoordsXML;
 import org.courses.mobileentity.entity.RouteXML;
 import org.courses.mobileentity.entity.RoutepointXML;
+import org.courses.whpp.entity.User;
+import org.courses.whpp.session.UserFacade;
+import org.courses.whpp.worker.ejb.MessageHandler;
+import org.courses.whpp.worker.ejb.MessageHandlerLocal;
+import org.courses.whpp.worker.ejb.azuretable.TableRouteFacade;
+import org.courses.whpp.worker.ejb.security.Authenticator;
+import org.courses.whpp.worker.ejb.xml.XmlCoder;
 
 /**
  *
  * @author stvad
  */
 @Path("/mobile")
+@Singleton
 public class api {
+
+	@EJB
+	Authenticator authenticator;
+
+	@EJB
+	TableRouteFacade routeFacade;
+
+	@EJB
+	XmlCoder coder;
 
 	@GET
 	@Produces(MediaType.TEXT_XML)
@@ -42,51 +65,13 @@ public class api {
 	@GET
 	@Path("/get_route")
 	@Produces(MediaType.TEXT_XML)
-	public Response getRoute(@HeaderParam("user_login") String id, @HeaderParam("user_pass") String passHash) throws JAXBException {
-		Long uid = null;
-		try {
-			uid = Long.parseLong(id);
-		} catch (NumberFormatException ex) {
-			return Response.status(400).build();
-		}
+	public Response getRoute(@HeaderParam("user_login") String id, @HeaderParam("user_pass") String passHash) throws JAXBException, IOException, ClassNotFoundException, StorageException {
 
-		if (stubs.auth(uid, passHash)) {
+		if (authenticator.isDriverExists(id, passHash)) {
 
-			CoordsXML coordsXML = new CoordsXML("10", "coords", 10, 10);
-			CoordsXML coordsXML1 = new CoordsXML("11", "coords2", 11, 11);
+			String answer = coder.convertToXML(routeFacade.getRouteForDriver(id));
 
-			RouteXML routeXML = new RouteXML("56238", "route");
-
-			RoutepointXML routepointXML = new RoutepointXML("10", "FUCK-POINT");
-			routepointXML.setCoordsId(coordsXML);
-			routepointXML.setRouteId(routeXML);
-
-			RoutepointXML routepointXML1 = new RoutepointXML("11", "FUCK-POINT2");
-			routepointXML1.setCoordsId(coordsXML1);
-			routepointXML1.setRouteId(routeXML);
-
-			ArrayList<RoutepointXML> list = new ArrayList<RoutepointXML>();
-			list.add(routepointXML);
-			list.add(routepointXML1);
-
-			routeXML.setRoutepointList(list);
-
-			JAXBContext context = JAXBContext.newInstance(RouteXML.class);
-			Marshaller m = context.createMarshaller();
-			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-			m.marshal(routeXML, baos);
-			m.marshal(routeXML, System.out);
-
-			Unmarshaller handler = context.createUnmarshaller();
-// Get the object
-
-			ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-			RouteXML msg = (RouteXML) handler.unmarshal(bais);
-
-			System.out.println(msg);
-			return Response.status(200).entity(baos.toString()).build();
+			return Response.status(200).entity(answer).build();
 
 		} else {
 			return Response.status(401).build();
