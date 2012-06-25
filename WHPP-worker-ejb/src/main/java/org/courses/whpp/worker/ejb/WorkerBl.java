@@ -15,7 +15,9 @@ import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import org.courses.mobileentity.entity.RouteXML;
 import org.courses.mobileentity.entity.RoutepointXML;
-import org.courses.whpp.worker.ejb.azuretable.TableRouteFacade;
+import org.courses.mobileentity.entity.WarningMsg;
+import org.courses.whpp.azuretable.TableMessageFacade;
+import org.courses.whpp.azuretable.TableRouteFacade;
 import org.courses.whpp.worker.ejb.xml.XmlCoder;
 
 /**
@@ -28,6 +30,9 @@ public class WorkerBl {
 
 	@EJB
 	TableRouteFacade routeFacade;
+
+	@EJB
+	TableMessageFacade messageFacade;
 
 	@EJB
 	XmlCoder coder;
@@ -55,5 +60,15 @@ public class WorkerBl {
 				Logger.getLogger(WorkerBl.class.getName()).log(Level.INFO, "Driver {0} checked point {1}", new Object[]{driverId, routepointXML});
 			}
 		}
+	}
+
+	public void receiveWarningMessage(String message, String driverId) throws StorageException, IOException {
+		
+		Logger.getLogger(WorkerBl.class.getName()).log(Level.INFO, "Receive new warning message from driver {0}", driverId);
+		WarningMsg msg = new WarningMsg();
+		msg.setDriverId(driverId);
+		msg.setMessage(message);
+
+		messageFacade.createOrReplace(msg);
 	}
 }

@@ -14,7 +14,7 @@ import org.courses.mobileentity.entity.RouteXML;
 import org.courses.whpp.entity.Route;
 import org.courses.whpp.message.Message;
 import org.courses.whpp.session.RouteFacade;
-import org.courses.whpp.worker.ejb.azuretable.TableRouteFacade;
+import org.courses.whpp.azuretable.TableRouteFacade;
 import org.courses.whpp.worker.ejb.util.EntityXMLConverter;
 import org.courses.whpp.worker.ejb.util.MessageConverter;
 

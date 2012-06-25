@@ -84,12 +84,11 @@ public class api {
 
 	@POST
 	@Path("/put_warning_msg")
-	public Response putWarningMessage(@HeaderParam("user_login") String id, @HeaderParam("user_pass") String passHash,
-			String msgText) {
+	public Response putWarningMessage(@HeaderParam("user_login") String id, @HeaderParam("user_pass") String passHash, String msgText) {
 		try {
 			if (authenticator.isDriverExists(id, passHash)) {
 
-//				String answer = coder.convertToXML(routeFacade.getRouteForDriver(id));
+				workerBl.receiveWarningMessage(msgText, id);
 
 				return Response.status(200).entity(OK_MESSAGE).build();
 
